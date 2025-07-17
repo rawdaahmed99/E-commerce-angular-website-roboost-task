@@ -1,0 +1,32 @@
+<div class="container py-3">
+  <div class="row flex-row-reverse contentContainer gx-4 gy-4"> 
+
+    <div class="col-lg-3 order-lg-1">
+      <button
+        class="btn btn-outline-secondary d-lg-none mb-3 w-100"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mobileFilters"
+      >
+        الفلاتر
+      </button>
+
+      <div class="collapse d-lg-block" id="mobileFilters">
+        <app-product-filters (filtersChanged)="onFiltersChanged($event)"></app-product-filters>
+      </div>
+    </div>
+
+    <div class="col-lg-9 order-lg-2">
+      <div class="row g-4">
+        <div class="col-12 col-sm-6 col-lg-4" *ngFor="let product of filteredProducts">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      </div>
+
+      <div class="text-center mt-4" *ngIf="filteredProducts.length">
+        <button class="darkMoreBtn btn btn-outline" (click)="loadMore()">عرض المزيد</button>
+      </div>
+    </div>
+
+  </div>
+</div>

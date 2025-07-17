@@ -1,0 +1,122 @@
+<div class="container py-5" *ngIf="!isLoading && product">
+  <div class="row gy-4 align-items-start"style="direction: rtl; ">
+
+    <div class="col-12 col-md-1 order-2 order-md-1 d-flex flex-md-column justify-content-center gap-2">
+      <img *ngFor="let img of product.images.slice(0, 4)"
+           [src]="img"
+           class="img-thumbnail"
+           [class.border-success]="img === selectedImage"
+           (click)="selectedImage = img"
+           style="height: 60px; width: 60px; object-fit: cover; cursor: pointer; " />
+    </div>
+
+    <div class="col-12 col-md-5 order-1 order-md-2 text-center">
+      <img [src]="selectedImage || product.thumbnail"
+           class="img-fluid product-main-image"
+           alt="{{ product.title }}"
+           style="max-height: 250px; object-fit: contain;">
+    </div>
+
+    <div class="col-12 col-md-6 order-3 text-end">
+      <p class="text-muted mb-1">{{ product.brand }}</p>
+      <h4 class="mt-2">{{ product.title }}</h4>
+
+      <div class="mb-2">
+        <span class="small me-1">({{ product.rating | number:'1.1-1' }})</span>
+        <ng-container *ngFor="let star of getStars(product.rating)">
+          <i class="bi" [ngClass]="star <= product.rating ? 'bi-star-fill text-warning' : 'bi-star text-secondary'"></i>
+        </ng-container>
+      </div>
+
+      <p class="small text-muted mb-3">{{ product.description }}</p>
+
+      <div class="my-3 d-flex align-items-center justify-content-end gap-3"style="direction: ltr; ">
+        <h3 class="fw-bold" style="color:#62D0B6;">{{ product.price | round }} ر.س</h3>
+        <del class="text-muted" *ngIf="product.discountPercentage > 0">{{ (product.price / (1 - product.discountPercentage / 100)) | round }} ر.س</del>
+        <div class="d-flex align-items-center">
+
+            <input type="number" class="form-control" style="width: 70px;" min="1" [(ngModel)]="quantity">
+             <label class="ms-2 small">:الكمية</label>
+        </div>
+      </div>
+
+
+      <div class="d-flex flex-wrap gap-3 justify-content-end mb-4">
+        <button class="btn btn-sm " style='border-color:#62D0B6; color:#62D0B6; flex-grow: 1;' (click)="addToCart(product)">
+          <i class="bi bi-cart-plus me-2"></i> أضف للسلة
+        </button>
+        <button class="btn btn-sm text-white" style="background:#62D0B6; flex-grow: 1;">شراء سريع</button>
+      </div>
+    </div>
+  </div>
+
+<div class="row row-cols-2 row-cols-md-3 g-3 justify-content-center mt-4 text-start">
+  <!-- كرت تابي -->
+  <div class="col">
+    <div class="border rounded-1 p-2  dark:bg-dark text-dark dark:text-light h-100 shadow-sm">
+      <img src="images/Payemnt Icons.png" alt="تابي" style="height: 50px;" class="mb-2 float-end">
+      <!-- <p class="mb-2 fw-bold fs-5">تابي</p> -->
+      <p class="mb-1 small text-muted fs-9 text-end p-4">ادفع ربع القيمة الآن، وقسط على 3 أشهر. بدون رسوم SAR 11.77</p>
+    </div>
+  </div>
+
+
+  <div class="col">
+    <div class="border rounded-1 p-2  dark:bg-dark text-dark dark:text-light h-100 shadow-sm">
+      <img src="images/Payemnt Icons (1).png" alt="spoti" style="height: 40px;" class="mb-3 float-end">
+      <!-- <p class="mb-2 fw-bold fs-5">spoti</p> -->
+      <p class="mb-0 small text-muted fs-6 text-end p-4">سهلنا الدفع لاشتراكاتك على أربع أقساط بدون تكلفة</p>
+    </div>
+  </div>
+
+
+  <div class="col">
+    <div class="border rounded-1 p-2  dark:bg-dark text-dark dark:text-light h-100 shadow-sm">
+      <img src="images/Payemnt Icons (1).png" alt="Visa" style="height: 40px;" class="mb-3 float-end">
+      <!-- <p class="mb-2 fw-bold fs-5">Visa</p> -->
+      <p class="mb-0 small text-muted fs-6 text-end p-4">ادفع مباشرة باستخدام بطاقة الفيزا الخاصة بك بكل أمان وسرعة</p>
+    </div>
+  </div>
+</div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mt-5 justify-content-end" id="myTab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">تفاصيل المنتج</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">التقييمات</button>
+    </li>
+  </ul>
+
+  <div class="tab-content mt-3 text-end" id="myTabContent">
+    <div class="tab-pane fade show active" id="details" role="tabpanel">
+      <p>{{ product.description }}</p>
+    </div>
+    <div class="tab-pane fade" id="reviews" role="tabpanel">
+      <p *ngIf="reviews.length === 0">لا توجد تقييمات حاليًا.</p>
+    </div>
+  </div>
+
+
+  <div class="related-products mt-5" *ngIf="relatedProducts.length > 0">
+    <hr>
+    <h3 class="text-end mb-2">منتجات مشابهه</h3>
+<p class="text-end" >تسوق احدث المنتجات المميزة المضافة جديد</p>
+    <div class="row g-5">
+      <div class="col-12 col-sm-6 col-lg-3" *ngFor="let relatedProduct of relatedProducts">
+
+        <app-product-card [product]="relatedProduct"></app-product-card>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+
+    <div class="spinner-border text-success" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>

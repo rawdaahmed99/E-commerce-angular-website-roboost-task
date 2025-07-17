@@ -1,0 +1,180 @@
+<aside class="product-filter-sidebar dark-mode" dir="rtl">
+  <div class="filter-container">
+
+    <!-- الفئة -->
+    <section class="filter-section mb-3">
+      <div class="filter-title d-flex align-items-center justify-content-between">
+        <span class="fw-bold">الفئة</span>
+        <i class="bi bi-chevron-down"
+           (click)="categoryOpen = !categoryOpen"
+           [ngClass]="{'rotate-up': categoryOpen}"></i>
+      </div>
+      <div class="filter-list" *ngIf="categoryOpen">
+        <div class="filter-item d-flex align-items-center justify-content-between mb-2"
+             *ngFor="let cat of getVisibleItems(categories, categoryShowAll)">
+          <div class="d-flex align-items-center">
+             <input
+      type="radio"
+      name="category"
+      class="form-check-input me-2"
+      [id]="'cat-' + cat.name"
+      [checked]="selectedCategory === (cat.name === 'الكل' ? '' : cat.name)"
+      (change)="onCategoryChange(cat.name)"
+    />
+            <label [for]="'cat-' + cat.name" class="form-check-label">{{ cat.name }}</label>
+          </div>
+          <span class="filter-count">({{ cat.count }})</span>
+        </div>
+        <button *ngIf="categories.length > 3"
+                class="filter-more"
+                (click)="toggleShowMore('category')">
+          {{ categoryShowAll ? 'عرض أقل' : 'عرض المزيد' }}
+        </button>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- الماركة -->
+    <section class="filter-section mb-3">
+      <div class="filter-title d-flex align-items-center justify-content-between">
+        <span class="fw-bold">الماركة</span>
+        <i class="bi bi-chevron-down"
+           (click)="brandOpen = !brandOpen"
+           [ngClass]="{'rotate-up': brandOpen}"></i>
+      </div>
+      <div class="filter-list" *ngIf="brandOpen">
+        <div class="filter-item d-flex align-items-center justify-content-between mb-2"
+             *ngFor="let brand of getVisibleItems(brands, brandShowAll)">
+          <div class="d-flex align-items-center">
+            <input type="radio" name="brand" class="form-check-input me-2" [id]="'brand-' + brand.name"
+                   (change)="onBrandChange(brand.name)" [value]="brand.name" [(ngModel)]="selectedBrand"
+                      [checked]="selectedBrand === (brand.name === 'الكل' ? '' : brand.name)">
+            <label [for]="'brand-' + brand.name" class="form-check-label">{{ brand.name }}</label>
+          </div>
+          <span class="filter-count">({{ brand.count }})</span>
+        </div>
+        <button *ngIf="brands.length > 3"
+                class="filter-more"
+                (click)="toggleShowMore('brand')">
+          {{ brandShowAll ? 'عرض أقل' : 'عرض المزيد' }}
+        </button>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- السعر -->
+    <section class="filter-section mb-2">
+      <div class="filter-title d-flex align-items-center justify-content-between">
+        <span class="fw-bold">السعر</span>
+        <i class="bi bi-chevron-down"
+           (click)="priceOpen = !priceOpen"
+           [ngClass]="{'rotate-up': priceOpen}"></i>
+      </div>
+      <div class="filter-list" *ngIf="priceOpen">
+        <div class="price-range-container mb-3">
+          <div class="price-range-slider">
+            <div class="price-range-track"></div>
+            <div class="price-range-fill"
+                 [style.left]="((price.from - minPrice) / (maxPrice - minPrice) * 100) + '%'"
+                 [style.width]="((price.to - price.from) / (maxPrice - minPrice) * 100) + '%'">
+            </div>
+            <input type="range"
+                   class="price-range-input price-range-min"
+                   [min]="minPrice"
+                   [max]="maxPrice"
+                   [value]="price.from"
+                   (input)="onMinPriceChange($event)"
+                   step="100">
+            <input type="range"
+                   class="price-range-input price-range-max"
+                   [min]="minPrice"
+                   [max]="maxPrice"
+                   [value]="price.to"
+                   (input)="onMaxPriceChange($event)"
+                   step="100">
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="price-label-group">
+            <span class="price-label">من</span>
+            <input type="text" class="form-control form-control-sm text-end"
+                   [value]="price.from + ' ر.س'"
+                   (input)="onMinPriceInput($event)">
+          </div>
+          <div class="price-label-group">
+            <span class="price-label">إلى</span>
+            <input type="text" class="form-control form-control-sm text-end"
+                   [value]="price.to + ' ر.س'"
+                   (input)="onMaxPriceInput($event)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- اللون -->
+    <section class="filter-section mb-3">
+      <div class="filter-title d-flex align-items-center justify-content-between">
+        <span class="fw-bold">اللون</span>
+        <i class="bi bi-chevron-down"
+           (click)="colorOpen = !colorOpen"
+           [ngClass]="{'rotate-up': colorOpen}"></i>
+      </div>
+      <div class="filter-list color-list" *ngIf="colorOpen">
+        <div class="color-row d-flex align-items-center justify-content-between mb-2"
+             *ngFor="let color of getVisibleItems(colors, colorShowAll)">
+          <label class="form-check-label" [for]="'color-' + color.name">
+            <input type="radio" name="color" class="form-check-input me-2"
+                   [id]="'color-' + color.name" [value]="color.name"
+                   [(ngModel)]="selectedColor" (change)="onColorChange(color.name)">
+          </label>
+          <span class="color-circle" [ngStyle]="{'background': color.hex}"></span>
+          <span class="color-name flex-grow-1">{{ color.name }}</span>
+          <span class="color-count">({{ color.count }})</span>
+        </div>
+        <button *ngIf="colors.length > 3 && colorOpen"
+                class="filter-more"
+                (click)="toggleShowMore('color')">
+          {{ colorShowAll ? 'عرض أقل' : 'عرض المزيد' }}
+        </button>
+      </div>
+    </section>
+
+    <hr>
+
+    <!-- التقييم -->
+    <div class="filter-item d-flex align-items-center justify-content-between mb-2"
+         *ngFor="let rate of ratings">
+      <input type="radio" name="rating" class="form-check-input me-2"
+             [id]="'rate-' + rate.stars" [value]="rate.stars"
+             [(ngModel)]="selectedRating" (change)="onRatingChange(rate.stars)">
+
+      <label [for]="'rate-' + rate.stars" class="form-check-label rating-stars-label me-2" style="margin-bottom:0;">
+        <ng-container *ngIf="rate.stars > 0; else allLabel">
+          <span class="text-warning rating-stars">
+            {{ '★'.repeat(rate.stars) + '☆'.repeat(5 - rate.stars) }}
+          </span>
+        </ng-container>
+        <ng-template #allLabel>الكل</ng-template>
+      </label>
+      <span class="filter-count ms-2">({{ rate.count }})</span>
+    </div>
+
+    <button class="btn btn-outline-dark border-dark w-100 mt-2" (click)="resetFilters()">إعادة ضبط</button>
+
+    <!-- Banner -->
+<!-- Banner Responsive -->
+<div class="filter-banner mt-3 p-3 rounded-3 text-white w-100"
+     style="max-width: 100%; height: 390px; background: #111 url('images/image22.png') no-repeat center center / cover;">
+  <div class="mb-3">
+    <div class="small">سماعات ديجتال</div>
+    <div class="fw-bold" style="font-size:1.2rem;">أفضل صوت نقي</div>
+  </div>
+  <a href="#" class="btn btn-light btn-sm">تسوق الآن</a>
+</div>
+
+  </div>
+</aside>

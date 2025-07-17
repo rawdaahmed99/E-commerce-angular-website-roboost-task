@@ -1,0 +1,41 @@
+<section class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4" dir="rtl">
+    <div>
+      <h4 class="fw-bold mb-1">تسوّق حسب الفئات</h4>
+      <p class="text-muted mb-0" style="font-size: 14px;">
+        تسوّق أحدث المنتجات المميزة المصنّفة جديد
+      </p>
+    </div>
+    <a href="#" class="btn btn-outline-success rounded-pill px-4">عرض الكل</a>
+  </div>
+
+  <div *ngIf="loading" class="text-center ">جاري تحميل الفئات...</div>
+
+  <div
+    *ngIf="!loading && categoriesWithImages.length > 0"
+    class="d-flex flex-wrap gap-1 justify-content-center justify-content-lg-start"
+    dir="rtl"
+  >
+    <div
+      *ngFor="let cat of categoriesWithImages"
+      class="text-center p-3  "
+      style="width: 150px; transition: 0.3s; cursor: pointer;"
+    >
+      <div
+        class="bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3"
+        style="width: 120px; height: 120px;"
+      >
+        <img
+          *ngIf="cat.image"
+          [src]="cat.image"
+          alt="{{ cat.name }}"
+          style="max-width: 90px; max-height: 90px; object-fit: contain;"
+        />
+      </div>
+      <h6 class="mb-1 text-capitalize fw-bold" style="font-size: 14px;">
+        {{ cat.name }}
+      </h6>
+      <small class="text-muted" style="font-size: 13px;">{{ cat.count }} منتج</small>
+    </div>
+  </div>
+</section>

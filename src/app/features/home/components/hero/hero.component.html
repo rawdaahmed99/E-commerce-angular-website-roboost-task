@@ -1,0 +1,32 @@
+<!-- HERO SECTION -->
+<section  class="hero-section position-relative d-flex align-items-center text-white"
+  style="height: 80vh;"
+  [dir]="direction"
+  [ngStyle]="{
+    'background-image': backgroundImage ? 'url(' + backgroundImage + ')' : 'none'
+  }">
+  <div class="overlay position-absolute w-100 h-100"></div>
+
+  <div class="container position-relative" [ngClass]="{ 'text-center': direction === 'rtl', 'text-lg-start': direction === 'ltr' }">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 mx-auto">
+        <h2 class="fw-bold mb-3">{{ title }}</h2>
+        <p class="lead mb-4">
+          {{ description }}
+        </p>
+        <a href="#" class="btn btn-success btn-lg px-4">{{ buttonText }}</a>
+      </div>
+    </div>
+
+    <div *ngIf="showArrows" class="slider-arrows d-flex justify-content-between align-items-center">
+      <button class="arrow-btn"><</button>
+      <button class="arrow-btn">></button>
+    </div>
+
+    <div *ngIf="showDots" class="slider-dots text-center mt-4">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</section>

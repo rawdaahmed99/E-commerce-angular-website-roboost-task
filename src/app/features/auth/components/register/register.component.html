@@ -1,0 +1,95 @@
+<main class="main-content">
+  <div class="container">
+    <div class="illustration">
+      <img src="images/form-image.png" alt="illustration" style="width:100%;max-width:380px;">
+    </div>
+
+    <div class="register-form">
+      <div class="breadcrumbs">
+        <a href="#">الرئيسية</a> /
+        <span style="color:#009688">تسجيل حساب جديد</span>
+      </div>
+
+      <h2>جديد معنا؟ سجل حساب الآن</h2>
+      <p>يتيح لك التسجيل في هذا الموقع الوصول إلى حالة طلبك وحسابك.</p>
+
+      <form [formGroup]="registerForm" (ngSubmit)=" onSubmit()" autocomplete="off">
+
+        <div class="form-group input-icon">
+          <label for="username">الاسم</label>
+          <div class="position-relative">
+            <input id="username" type="text" formControlName="username" placeholder="الاسم الأول"
+              [class.is-invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" autocomplete="off">
+            <i class="fa-solid fa-user icon-left"></i>
+          </div>
+          <div class="error" *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid">
+            <small style="color: red;" *ngIf="registerForm.get('username')?.errors?.['required']">الاسم مطلوب</small>
+            <small style="color: red;" *ngIf="registerForm.get('username')?.errors?.['pattern']">لا يجب أن يبدأ الاسم برقم ويجب أن يحتوي على
+              حروف فقط</small>
+            <small style="color: red;" *ngIf="registerForm.get('username')?.errors?.['minlength']">الاسم لا يقل عن 3 حروف</small>
+            <small style="color: red;" *ngIf="registerForm.get('username')?.errors?.['maxlength']">الاسم لا يزيد عن 20 حرف</small>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group input-icon">
+          <label for="email">البريد الإلكتروني</label>
+          <div class="position-relative">
+            <input id="email" type="email" formControlName="email" placeholder="البريد الإلكتروني"
+              [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <i class="fa-solid fa-envelope icon-left"></i>
+          </div>
+          <div class="error" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+            <small style="color: red;" *ngIf="registerForm.get('email')?.errors?.['required']">البريد مطلوب</small>
+            <small style="color: red;" *ngIf="registerForm.get('email')?.errors?.['email']">صيغة البريد غير صحيحة</small>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group input-icon">
+          <label for="password">كلمة المرور</label>
+          <div class="position-relative">
+            <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password"
+              placeholder="كلمة المرور"
+              [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            <i class="fa-solid fa-lock icon-left"></i>
+            <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="togglePasswordVisibility()"
+              style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999;"></i>
+          </div>
+          <div class="error" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+            <small style="color: red;" *ngIf="registerForm.get('password')?.errors?.['required']">كلمة المرور مطلوبة</small>
+            <small style="color: red;" *ngIf="registerForm.get('password')?.errors?.['minlength']">كلمة المرور لا تقل عن 8 حروف</small>
+            <small style="color: red;" *ngIf="registerForm.get('password')?.errors?.['pattern']">يجب أن تحتوي على حرف كبير وصغير ورقم ورمز
+              خاص</small>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="form-group input-icon mb-4">
+          <label>تأكيد كلمة المرور</label>
+          <div class="position-relative">
+            <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="rePassword"
+              placeholder="تأكيد كلمة المرور" class="form-control" [ngClass]="{
+        'is-valid': !registerForm.get('rePassword')?.errors && (registerForm.get('rePassword')?.touched ||registerForm.get('rePassword')?.dirty),
+        'is-invalid': registerForm.get('rePassword')?.errors && (registerForm.get('rePassword')?.touched ||registerForm.get('rePassword')?.dirty)
+      }">
+            <i class="fa-solid fa-lock icon-left"></i>
+            <i class="fa-solid" [ngClass]="showConfirmPassword ? 'fa-eye' : 'fa-eye-slash'"
+              (click)=" toggleConfirmPasswordVisibility()"
+              style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999;"></i>
+          </div>
+          @if(registerForm.getError("mismatch") && (registerForm.get('rePassword')?.touched
+          ||registerForm.get('rePassword')?.dirty))
+          {
+          <p class="alert alert-danger m-1">Passwords do not match</p>
+          }
+        </div>
+
+
+        <!-- Submit -->
+        <button type="submit" class="register-btn" [disabled]="registerForm.invalid">إنشاء حساب</button>
+        <a routerLink="/auth/login" class="login-link">تسجيل الدخول</a>
+      </form>
+    </div>
+  </div>
+</main>

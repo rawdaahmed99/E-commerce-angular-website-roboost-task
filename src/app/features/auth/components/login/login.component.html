@@ -1,0 +1,71 @@
+<main class="main-content">
+  <div class="container">
+    <div class="illustration">
+      <img src="images/pana.png" alt="illustration" style="width:100%;max-width:380px;">
+    </div>
+
+    <div class="register-form">
+      <div class="breadcrumbs">
+        <a href="#">الرئيسية</a> /
+        <span style="color:#009688">تسجيل الدخول</span>
+      </div>
+
+      <h2>لديك حساب؟ سجل الدخول</h2>
+      <p>قم بتسجيل الدخول حتى تتبع طلباتك وتصل بسهولة إلى قائمة مفضلاتك.</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+        <div class="form-group input-with-icon">
+          <label for="username">اسم المستخدم</label>
+          <div class="input-icon">
+            <input id="username" type="text" formControlName="username" placeholder="اسم المستخدم"
+              [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" autocomplete="off">
+            <i class="fas fa-user icon"></i>
+          </div>
+          <div class="error" *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+            <small *ngIf="loginForm.get('username')?.errors?.['required']">اسم المستخدم مطلوب</small>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group input-with-icon">
+          <label for="password">كلمة المرور</label>
+          <div class="input-icon position-relative">
+            <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+              placeholder="كلمة المرور"
+              [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <i class="fas fa-lock icon"></i>
+            <i class="fas" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'" (click)="togglePasswordVisibility()"
+              style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #999;"></i>
+          </div>
+          <div class="error" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+            <small style="color: red;" *ngIf="loginForm.get('password')?.errors?.['required']">كلمة المرور
+              مطلوبة</small>
+            <small style="color: red;" *ngIf="loginForm.get('password')?.errors?.['minlength']">لا تقل عن 8 حروف</small>
+            <small style="color: red;" *ngIf="loginForm.get('password')?.errors?.['pattern']">يجب أن تحتوي على حرف كبير
+              وصغير ورقم ورمز</small>
+          </div>
+        </div>
+        <!-- تذكرني ونسيت كلمة المرور -->
+        <div class="form-options">
+          <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+          <label class="remember-me">
+
+            تذكرني<input type="checkbox" class="m-2" formControlName="rememberMe">
+          </label>
+
+
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="register-btn" [disabled]="loginForm.invalid || isLoading">
+          تسجيل الدخول
+          <span *ngIf="isLoading"><i class="fas fa-spinner fa-spin"></i></span>
+        </button>
+
+        <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+        <a routerLink="/auth/register" class="login-link">ليس لديك حساب؟ سجل الآن</a>
+      </form>
+    </div>
+  </div>
+</main>

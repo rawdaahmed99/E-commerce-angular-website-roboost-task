@@ -1,0 +1,12 @@
+.contentContainer {
+display: flex;
+flex-direction: row-reverse;
+align-items: flex-start;
+padding: 40px 0px;
+
+width: auto;
+height: auto;
+flex: none;
+order: 2;
+flex-grow: 0;
+}

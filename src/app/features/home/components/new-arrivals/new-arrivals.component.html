@@ -1,0 +1,20 @@
+<section class="container py-5">
+ <div class="d-flex justify-content-between align-items-center mb-4" dir="rtl">
+    <div>
+      <h4 class="fw-bold mb-1">وصل حديثاً</h4>
+      <p class="text-muted mb-0" style="font-size: 14px;">
+تسوق احدث المنتجات المميزة المضافة جديد      </p>
+    </div>
+    <a href="#" class="btn btn-outline-success rounded-pill px-4">عرض الكل</a>
+  </div>
+
+  <div *ngIf="loading" class="text-center text-muted">جاري تحميل المنتجات...</div>
+
+  <div *ngIf="!loading && products.length > 0" class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col" *ngFor="let product of products">
+      <app-product-card [product]="product"></app-product-card>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && products.length === 0" class="text-center text-muted">لا توجد منتجات جديدة</div>
+</section>

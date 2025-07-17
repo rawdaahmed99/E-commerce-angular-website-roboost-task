@@ -1,0 +1,167 @@
+<!-- Top Info Bar -->
+<div
+  class="top-info-bar d-flex justify-content-between align-items-center px-3 py-1"
+  dir="rtl"
+>
+  <div class="info-left d-flex gap-3 align-items-center small text-secondary">
+    <span class="support-email">Supportsalla.sa</span>
+    <span>|</span>
+    <span class="support-phone">+966556754472</span>
+  </div>
+
+  <div class="info-right d-flex gap-3 align-items-center small">
+    <span class="lang-status d-flex align-items-center">
+      <img src="images/flag.png" alt="flag" class="flag-icon me-1" />
+      العربية - رسـ
+    </span>
+    <span>|</span>
+    <span>سياسة الاستبدال أو الاسترجاع</span>
+    <span>|</span>
+    <span>المفضلة</span>
+    <span>|</span>
+    <span>تواصل معنا</span>
+  </div>
+</div>
+
+<header
+  class="main-header d-flex justify-content-between align-items-center px-3 py-2"
+  dir="rtl"
+>
+  <div class="header-right">
+    <a
+      class="logo d-flex align-items-center gap-2 text-decoration-none"
+      [routerLink]="['/home']"
+    >
+      <img
+        src="https://cdn.prod.website-files.com/6687a29a1271c269d275d4b7/66a9e11929ec2a7cebec1c51_icon_100x100_5.svg"
+        alt="متجر سلة"
+        style="width: 50px; height: 50px; object-fit: contain"
+      />
+      <h5 class="mb-0 logo-name">متجر سله</h5>
+    </a>
+  </div>
+
+  <div class="header-center flex-grow-1 px-4">
+    <form class="search-form d-flex" (submit)="onSearch()">
+      <input
+        type="text"
+        class="form-control me-2"
+        placeholder="ابحث عما تريد"
+        [(ngModel)]="searchQuery"
+        name="search"
+      />
+      <button type="submit" class="btn btn-outline-secondary">
+        <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+          <circle cx="9" cy="9" r="7" stroke="#888" stroke-width="2" />
+          <path
+            d="M15 15L18 18"
+            stroke="#888"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </form>
+  </div>
+
+  <div class="header-left d-flex align-items-center gap-3">
+    <div class="user-box d-flex align-items-center gap-2">
+      <i class="bi bi-person-circle fs-4"></i>
+      <div class="d-flex flex-column text-end">
+        <!-- Check authentication status directly from the service's signal -->
+        <ng-container *ngIf="authService.isAuthenticated(); else notLoggedIn">
+          <!-- If logged in, display user info -->
+          <span class="small"
+            >مرحبًا {{ authService.currentUser()?.username }}</span
+          >
+          <a
+            (click)="logout()"
+            class="text-decoration-none fw-bold"
+            role="button"
+            >تسجيل خروج</a
+          >
+        </ng-container>
+
+        <!-- Template to show if the user is not logged in -->
+        <ng-template #notLoggedIn>
+          <span class="small">أهلاً بك</span>
+          <a routerLink="/auth/login" class="login-link text-decoration-none fw-bold"
+            >تسجيل دخول</a
+          >
+        </ng-template>
+      </div>
+    </div>
+
+
+   <a
+  *ngIf="authService.isAuthenticated()"
+  [routerLink]="['/cart/cart']"
+  class="cart-link d-flex align-items-center gap-2 position-relative text-decoration-none"
+>
+  <div class="position-relative">
+    <img
+      src="images/shopping-cart.png"
+      alt="سلة المشتريات"
+      class="cart-icon"
+    />
+
+
+        <span
+          *ngIf="cartService.cartCount() > 0"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger"
+          style="font-size: 11px; padding: 4px 6px"
+        >
+          {{ cartService.cartCount() }}
+        </span>
+      </div>
+
+      <span class="d-none d-md-inline">سلة المشتريات</span>
+
+      <span class="text-success fw-bold">
+        {{ cartService.cartTotal() | round }} ر.س
+      </span>
+    </a>
+    <button
+      class="btn btn-outline-secondary mode-toggle-btn"
+      (click)="toggleTheme()"
+      title="تغيير وضع العرض"
+    >
+      <i
+        class="bi"
+        [ngClass]="isDarkMode ? 'bi-sun-fill' : 'bi-moon-stars-fill'"
+      ></i>
+    </button>
+
+    <!-- <button
+      (click)="changeLang('en')"
+      *ngIf="languageService.currentLang() === 'ar'"
+    >
+      English
+    </button>
+    <button
+      (click)="changeLang('ar')"
+      *ngIf="languageService.currentLang() === 'en'"
+    >
+      العربية
+    </button> -->
+  </div>
+</header>
+
+<nav class="main-navbar border-top border-bottom" dir="rtl">
+  <ul
+    class="nav-list d-flex flex-wrap gap-3 justify-content-center mb-0 list-unstyled"
+  >
+    <li class="nav-item">
+      <a [routerLink]="['/products']" class="nav-link">كل المنتجات</a>
+    </li>
+
+    <li class="nav-item" *ngFor="let cat of categories">
+      <a
+        [routerLink]="['/products/category', formatCategoryLink(cat)]"
+        class="nav-link"
+      >
+        {{ translateCategory(cat) }}
+      </a>
+    </li>
+  </ul>
+</nav>
