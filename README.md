@@ -1,59 +1,56 @@
-# ECommerece
+# E-commerce Angular Website (Roboost)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.9.
+## Setup Instructions
 
-## Development server
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd E-commerce-angular-website-roboost
+   ```
 
-To start a local development server, run:
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-```bash
-ng serve
-```
+3. **Run the development server**
+   ```bash
+   ng serve -o
+   ```
+   The app will be available at `http://localhost:4200/`.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+4. **API Setup**
+   - The app expects a backend API for products, authentication, and cart operations.
+   - Update `environment.ts` with your API base URL if needed.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Assumptions Made
 
-```bash
-ng generate component component-name
-```
+- The backend API follows REST conventions and provides endpoints for products, search, authentication, and cart.
+- Product search is performed via a `/products/search?q=...` endpoint.
+- User authentication and cart management are handled via separate endpoints.
+- The project uses Angular 19+ with standalone components and feature modules.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Additional Features Implemented
 
-## Building
+- **Dark Mode:** Toggle for dark/light theme with CSS adjustments.
+- **Feature-based Structure:** Code is organized into `features` (auth, products, cart, home) for scalability.
+- **Lazy Loading:** Feature modules are lazy-loaded for performance.
+- **Responsive Design:** Layout adapts to mobile and desktop screens.
+- **Search Integration:** Product search uses query params and updates results via API.
+- **Pagination:** "عرض المزيد" (Load More) button for paginated product loading.
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## Approach
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Modularization:** The app is divided into feature modules (`auth`, `products`, `cart`, `home`) to keep code organized and maintainable.
+- **Routing:** Angular Router is used with lazy loading for each feature module. Query parameters are used for search functionality.
+- **Standalone Components:** Angular standalone components are used for reusability and simplicity.
+- **API Integration:** Services handle all HTTP requests. Components subscribe to route changes and update their data accordingly.
+- **Dark Mode:** CSS selectors are used to apply dark mode styles globally and to specific components.
+- **Best Practices:** Unused imports and variables are removed, and TypeScript types are used for clarity and safety.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
